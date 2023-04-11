@@ -71,8 +71,10 @@
     (swap! parsers* assoc client-id parser)
     (if @server*
       (assoc @server* :com.wsscode.node-ws-server/client-id client-id)
-      (let [port (random-port)]
-        (let [local-http-address (str "http://localhost:" port "/")
+      (let [port (get config :com.wsscode.pathom.viz.ws-connector.core/client-port (random-port))]
+        (let [local-http-address (format "http://%s:%s/"
+                                         (get config :com.wsscode.pathom.viz.ws-connector.core/client-host "localhost")
+                                         port)
               config'            (assoc config
                                    ::port port
                                    ::local-http-address local-http-address)
